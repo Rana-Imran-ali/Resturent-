@@ -1,0 +1,53 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-slate-950 text-slate-100 antialiased font-sans;
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+  }
+}
+
+/* Custom scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: rgba(15, 23, 42, 0.6);
+}
+::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, 0.25);
+  border-radius: 9999px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(148, 163, 184, 0.4);
+}
+
+/* Hide scrollbar utility */
+.no-scrollbar::-webkit-scrollbar { display: none; }
+.no-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+/* animate-in helpers (used in modals & floating panel) */
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+@keyframes slideInFromRight {
+  from { transform: translateX(100%); opacity: 0; }
+  to   { transform: translateX(0);    opacity: 1; }
+}
+@keyframes slideInFromBottom {
+  from { transform: translateY(16px); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+
+.animate-in { animation-fill-mode: both; }
+.fade-in { animation: fadeIn var(--tw-animation-duration, 200ms) ease-out; }
+.slide-in-from-right { animation: slideInFromRight var(--tw-animation-duration, 300ms) cubic-bezier(0.16,1,0.3,1); }
+.slide-in-from-bottom { animation: slideInFromBottom var(--tw-animation-duration, 300ms) cubic-bezier(0.16,1,0.3,1); }
+.duration-200 { --tw-animation-duration: 200ms; }
+.duration-300 { --tw-animation-duration: 300ms; }

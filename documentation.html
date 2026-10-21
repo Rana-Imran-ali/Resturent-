@@ -1,0 +1,664 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Dastarkhwan AI — Complete System Architecture & Feature Guide</title>
+<style>
+  @page {
+    size: A4;
+    margin: 16mm 14mm 16mm 14mm;
+    @bottom-right {
+      content: counter(page);
+    }
+  }
+
+  *, *::before, *::after {
+    box-sizing: border-box;
+  }
+
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    color: #1e293b;
+    background: #ffffff;
+    line-height: 1.6;
+    font-size: 11pt;
+    margin: 0;
+    padding: 0;
+  }
+
+  .cover-page {
+    page-break-after: always;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    min-height: 90vh;
+    text-align: center;
+    padding: 40px 20px;
+    background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%);
+    color: #ffffff;
+    border-radius: 16px;
+    margin-bottom: 30px;
+  }
+
+  .cover-badge {
+    background: rgba(249, 115, 22, 0.15);
+    border: 1px solid rgba(249, 115, 22, 0.4);
+    color: #fb923c;
+    padding: 6px 16px;
+    border-radius: 9999px;
+    font-size: 11pt;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    margin-bottom: 24px;
+    display: inline-block;
+  }
+
+  .cover-title {
+    font-size: 32pt;
+    font-weight: 800;
+    margin: 0 0 12px 0;
+    color: #ffffff;
+    letter-spacing: -0.5px;
+  }
+
+  .cover-subtitle {
+    font-size: 15pt;
+    color: #94a3b8;
+    max-width: 650px;
+    margin: 0 0 30px 0;
+    font-weight: 400;
+  }
+
+  .cover-meta {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 12px;
+    padding: 16px 28px;
+    text-align: left;
+    font-size: 10pt;
+    color: #cbd5e1;
+    display: inline-block;
+  }
+
+  .cover-meta div {
+    margin-bottom: 6px;
+  }
+
+  .cover-meta strong {
+    color: #f8fafc;
+  }
+
+  h1, h2, h3, h4 {
+    color: #0f172a;
+    font-weight: 700;
+    page-break-after: avoid;
+  }
+
+  h1 {
+    font-size: 20pt;
+    border-bottom: 2px solid #e2e8f0;
+    padding-bottom: 8px;
+    margin-top: 32px;
+    margin-bottom: 16px;
+    color: #ea580c;
+  }
+
+  h2 {
+    font-size: 15pt;
+    margin-top: 24px;
+    margin-bottom: 12px;
+    border-left: 4px solid #ea580c;
+    padding-left: 10px;
+  }
+
+  h3 {
+    font-size: 12pt;
+    margin-top: 18px;
+    margin-bottom: 8px;
+    color: #1e293b;
+  }
+
+  p {
+    margin: 0 0 10px 0;
+  }
+
+  ul, ol {
+    margin: 0 0 14px 0;
+    padding-left: 24px;
+  }
+
+  li {
+    margin-bottom: 6px;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0;
+    font-size: 10pt;
+    page-break-inside: avoid;
+  }
+
+  th, td {
+    padding: 9px 12px;
+    border: 1px solid #cbd5e1;
+    text-align: left;
+  }
+
+  th {
+    background-color: #f1f5f9;
+    font-weight: 700;
+    color: #0f172a;
+  }
+
+  tr:nth-child(even) td {
+    background-color: #f8fafc;
+  }
+
+  .badge {
+    display: inline-block;
+    padding: 2px 8px;
+    border-radius: 6px;
+    font-size: 8.5pt;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+
+  .badge-orange { background: #ffedd5; color: #c2410c; border: 1px solid #fdba74; }
+  .badge-green  { background: #dcfce7; color: #15803d; border: 1px solid #86efac; }
+  .badge-blue   { background: #e0f2fe; color: #0369a1; border: 1px solid #7dd3fc; }
+  .badge-red    { background: #fee2e2; color: #b91c1c; border: 1px solid #fca5a5; }
+
+  .callout {
+    background-color: #f8fafc;
+    border-left: 4px solid #f97316;
+    border-radius: 0 8px 8px 0;
+    padding: 12px 16px;
+    margin: 16px 0;
+    font-size: 10pt;
+  }
+
+  .callout-title {
+    font-weight: 700;
+    color: #c2410c;
+    margin-bottom: 4px;
+  }
+
+  .card-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin: 16px 0;
+    page-break-inside: avoid;
+  }
+
+  .card {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 10px;
+    padding: 14px;
+    font-size: 9.5pt;
+  }
+
+  .card strong {
+    color: #0f172a;
+    display: block;
+    font-size: 10.5pt;
+    margin-bottom: 4px;
+  }
+
+  .page-break {
+    page-break-after: always;
+  }
+
+  code {
+    font-family: Consolas, Monaco, "Courier New", monospace;
+    background: #f1f5f9;
+    padding: 2px 5px;
+    border-radius: 4px;
+    font-size: 9pt;
+    color: #0f172a;
+  }
+
+  .diagram-box {
+    background: #0f172a;
+    color: #e2e8f0;
+    padding: 16px;
+    border-radius: 10px;
+    font-family: Consolas, monospace;
+    font-size: 8.5pt;
+    line-height: 1.4;
+    white-space: pre;
+    overflow-x: auto;
+    margin: 16px 0;
+  }
+</style>
+</head>
+<body>
+
+<!-- COVER PAGE -->
+<div class="cover-page">
+  <div class="cover-badge">🥘 Complete System Architecture & Feature Guide</div>
+  <h1 class="cover-title">Dastarkhwan AI</h1>
+  <p class="cover-subtitle">
+    Urdu & Roman Urdu Conversational Voice Ordering & Real-Time Kitchen Operations Platform for Pakistani Restaurants
+  </p>
+  <div class="cover-meta">
+    <div><strong>Project Type:</strong> Final Year Project (FYP) & Enterprise Architecture Prototype</div>
+    <div><strong>Frontend Technologies:</strong> React 19, Vite 8, Tailwind CSS, Web Speech API, Web Audio API</div>
+    <div><strong>Backend Foundation:</strong> Laravel 12 API Architecture Ready</div>
+    <div><strong>Generated Date:</strong> October 2026</div>
+    <div><strong>Status:</strong> Fully Interactive Prototype (Live on Localhost)</div>
+  </div>
+</div>
+
+<!-- SECTION 1 -->
+<h1>1. Executive Summary & Problem-Solution Fit</h1>
+
+<h2>1.1 Real-World Pakistani Food Ordering Bottlenecks</h2>
+<p>
+  The quick-service restaurant (QSR) and fast-food industry in Pakistan experiences severe operational challenges during lunch and dinner rushes that standard Western software suites cannot solve:
+</p>
+
+<ul>
+  <li><strong>Extreme Peak-Hour Telephone Congestion:</strong> Between 8:00 PM and 11:30 PM, restaurant phone lines are continuously engaged. Customers face 5–10 minute hold times, causing a 30–40% abandonment rate.</li>
+  <li><strong>Colloquial Language & Slang (Code-Switching):</strong> Customers speak in a seamless blend of Roman Urdu and English (e.g., <em>"Bhai 2 zinger burger aur aik thanda pepsi bhej do"</em>, <em>"nahi 3 nahi 2 kar do"</em>, <em>"extra spicy sauce daalna"</em>). Traditional English voicebots fail to parse these phonetic nuances.</li>
+  <li><strong>Cash-on-Delivery (COD) Refusal & Fake Order Losses:</strong> Over 85% of restaurant deliveries in Pakistan are settled in cash at the doorstep. Restaurants suffer substantial food waste and dispatch costs when customers refuse delivery or submit fake orders.</li>
+  <li><strong>Kitchen Miscommunication & Lost Tickets:</strong> Telephone order-takers write paper slips by hand or manually enter items into the POS, leading to missing modifiers, incorrect quantities, and delayed dispatches.</li>
+  <li><strong>Selling 86'd (Out-of-Stock) Dishes:</strong> When key kitchen inventory runs out during a rush, telephone agents continue taking orders for those dishes due to a lack of real-time communication.</li>
+  <li><strong>Customer Frustration & Churn:</strong> Conventional bots get trapped in repetitive loops without providing a way to reach a human manager.</li>
+</ul>
+
+<h2>1.2 How Dastarkhwan AI Automates the Operations</h2>
+
+<table>
+  <thead>
+    <tr>
+      <th style="width: 35%;">Traditional Problem</th>
+      <th style="width: 65%;">Dastarkhwan AI Automated Solution</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Busy Phone Lines & Hold Times</strong></td>
+      <td><strong>0ms Automated Concurrency:</strong> AI Voice and Chat agents process multiple orders simultaneously 24/7 without hold times.</td>
+    </tr>
+    <tr>
+      <td><strong>Roman Urdu & Slang Misunderstandings</strong></td>
+      <td><strong>Custom Keyword & Entity Parser:</strong> Grounds customer intent against menu aliases and recognizes Roman Urdu numerals (<code>do</code>, <code>teen</code>, <code>ek</code>, <code>char</code>), Urdu script (<code>ایک</code>, <code>دو</code>), and English words.</td>
+    </tr>
+    <tr>
+      <td><strong>Wrong Items & Customer Misunderstandings</strong></td>
+      <td><strong>Automatic Bill Read-Back:</strong> The AI summarizes the itemized bill, delivery charges, and address, requiring explicit confirmation (<code>"Haan" / "Ji sahi hai"</code>) before cooking starts.</td>
+    </tr>
+    <tr>
+      <td><strong>Fake Orders & COD Fraud</strong></td>
+      <td><strong>Explainable Heuristic Risk Scorer:</strong> Automatically evaluates order risk (0–100) based on past cancellations, basket value, and customer history. High-risk orders trigger an automated verification phone call.</td>
+    </tr>
+    <tr>
+      <td><strong>Delayed Kitchen Punching</strong></td>
+      <td><strong>Instant Live Kanban Dispatch:</strong> Confirmed orders appear instantly in the kitchen's "New" column with a Web Audio API two-tone bell chime and visual highlight animation.</td>
+    </tr>
+    <tr>
+      <td><strong>Selling Sold-Out (86'd) Items</strong></td>
+      <td><strong>Real-Time 86'd Stock Sync:</strong> Toggling an item to "Off" in the admin dashboard instantly informs all voice and chat agents to reject that item and suggest available alternatives.</td>
+    </tr>
+    <tr>
+      <td><strong>Angry Customer Churn</strong></td>
+      <td><strong>Sentiment Analysis & Human Handoff:</strong> Detects negative sentiment keywords (<code>bakwas</code>, <code>ghussa</code>, <code>fuzool</code>) or repeated misunderstandings and routes the conversation to a Store Manager console.</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="page-break"></div>
+
+<!-- SECTION 2 -->
+<h1>2. Complete UI Breakdown & Feature Directory</h1>
+<p>
+  Every individual interface, page, modal, and interactive control in the Dastarkhwan AI platform is itemized below:
+</p>
+
+<h2>2.1 Global Top Bar & Navigation Controls</h2>
+<div class="card-grid">
+  <div class="card">
+    <strong>🥘 Brand & Environment Tag</strong>
+    Displays the Dastarkhwan AI branding, platform title, and <code>FYP Prototype</code> tag.
+  </div>
+  <div class="card">
+    <strong>👥 Demo Persona Selector</strong>
+    Dropdown to switch between 3 customer profiles:
+    <ul>
+      <li><em>Ayesha Khan (New Customer):</em> First-time user, triggers standard new-account evaluation.</li>
+      <li><em>Zainab Ahmed (Regular VIP):</em> 14 successful past orders, 0 cancellations, evaluates as Low Risk.</li>
+      <li><em>Ali Raza (Flagged Account):</em> 4 previous delivery cancellations, triggers High Risk rules.</li>
+    </ul>
+  </div>
+  <div class="card">
+    <strong>▶️ "Demo Mode" Walkthrough Button</strong>
+    Launches the automated 5-step interactive scripted presentation showing Roman Urdu parsing, corrections, and kitchen dispatch.
+  </div>
+  <div class="card">
+    <strong>🔄 "Reset Demo" State Button</strong>
+    Instantly restores default mock orders, clears the cart, resets chat history, clears manager escalations, and resets stock levels.
+  </div>
+</div>
+
+<h2>2.2 Persistent Sidebar Navigation</h2>
+<ul>
+  <li><strong>Order Menu (<code>/menu</code>):</strong> Food catalog with add-to-cart controls and stock status indicators.</li>
+  <li><strong>AI Chat Ordering (<code>/chat</code>):</strong> Smartphone simulator with live NLP intent inspector.</li>
+  <li><strong>Kitchen Kanban (<code>/dashboard</code>):</strong> Full-width 4-column kitchen fulfillment board with pending order counter badge.</li>
+  <li><strong>Human Handoff (<code>/handoff</code>):</strong> Real-time escalation queue accompanied by an amber pulsing alert badge.</li>
+  <li><strong>Risk & Fraud Check (<code>/risk</code>):</strong> COD fraud mitigation console with red alert counter badge.</li>
+  <li><strong>Kitchen Analytics (<code>/analytics</code>):</strong> Order volume, hourly peak rushes, and top-seller charts.</li>
+  <li><strong>Future Features (<code>/roadmap</code>):</strong> Strategic enterprise expansion roadmap (telephony, WhatsApp, digital wallets).</li>
+  <li><strong>AI Engine Status Indicator:</strong> Live green indicator confirming: <em>"AI Engine Online — Urdu / Roman Urdu Keyword Parser Grounded on Menu"</em>.</li>
+</ul>
+
+<h2>2.3 Page 1: Order Menu Hub (<code>/menu</code>)</h2>
+<ul>
+  <li><strong>Dual-View Switch (Customer View vs Admin Mode):</strong> Toggles between customer shopping and kitchen stock management.</li>
+  <li><strong>Stock Summary Strip:</strong> Live counter displaying the total count of <code>In Stock</code> vs <code>Sold Out (86'd)</code> items.</li>
+  <li><strong>Category Filter Bar:</strong> Quick-filter pills: <em>🌟 All Items</em>, <em>🍔 Burgers</em>, <em>🍕 Pizzas</em>, <em>🍟 Sides</em>, <em>🥤 Drinks</em>, and <em>🔥 Value Deals</em>.</li>
+  <li><strong>Fuzzy Search Input:</strong> Search box matching English names, Urdu script titles, and phonetic aliases (e.g., <code>zingar</code>, <code>fajita</code>, <code>thanda</code>).</li>
+  <li><strong>Visual Menu Item Card:</strong>
+    <ul>
+      <li>High-resolution food photography for all 21 items.</li>
+      <li>Overlaid price pill in PKR (e.g., <code>Rs. 520</code>).</li>
+      <li>Best Value combo badge with flame icon.</li>
+      <li>Urdu script subtitle (e.g., <code>کرسپی زنگر برگر</code>).</li>
+      <li>Item description and ingredients.</li>
+      <li><strong>"Add to Cart" Button (Customer View):</strong> One-tap button with animated green checkmark confirmation (<code>"Added to Cart!"</code>).</li>
+      <li><strong>86'd Toggle Button (Admin View):</strong> One-tap button to mark dishes as <em>In Stock</em> or <em>Sold Out</em>, instantly updating AI agent knowledge.</li>
+    </ul>
+  </li>
+  <li><strong>Slide-Out Cart Drawer:</strong>
+    <ul>
+      <li>Itemized cart list with unit prices.</li>
+      <li>Quantity adjusters (<code>+</code> and <code>-</code>) with real-time recalculation of subtotal and standard delivery fee (<code>Rs. 150</code>).</li>
+      <li>Item deletion trash button.</li>
+      <li><strong>"Place Order" Button:</strong> Directly dispatches the order to the kitchen Kanban board with an audio chime.</li>
+      <li><strong>"Clear Cart" Button:</strong> Empties the cart.</li>
+    </ul>
+  </li>
+  <li><strong>Mobile Floating Cart Bar:</strong> Bottom shortcut bar appearing on mobile screens when items are in the cart.</li>
+</ul>
+
+<div class="page-break"></div>
+
+<h2>2.4 Page 2: Customer AI Chat Ordering (<code>/chat</code>)</h2>
+<ul>
+  <li><strong>Smartphone Frame Mockup:</strong> Realistic bezel with camera notch, Wi-Fi/battery status bar, and active customer profile header.</li>
+  <li><strong>"Talk to a human" Emergency Button:</strong> Visible button allowing customers to immediately request a store manager.</li>
+  <li><strong>Message Feed:</strong> Distinct message bubbles for the Customer (orange), AI Assistant (slate), and Store Manager (highlighted).</li>
+  <li><strong>Animated Typing Indicator:</strong> Three bouncing dots shown while the AI evaluates customer speech.</li>
+  <li><strong>Quick-Reply Chips:</strong> Horizontal scrollable suggestion chips: <code>Menu dikhao 🍔</code>, <code>Deals kya hain? 🔥</code>, <code>2 zinger de do</code>, <code>Order confirm</code>, <code>Talk to Human</code>.</li>
+  <li><strong>Input Bar:</strong> Text field supporting English, Roman Urdu, and Urdu script, along with an inline microphone button.</li>
+  <li><strong>"What the AI Understood" NLP Inspector Card:</strong>
+    <ul>
+      <li>Displays detected linguistic style (<code>Roman Urdu</code>, <code>Urdu Script</code>, or <code>English</code>).</li>
+      <li>Displays verbatim customer input text.</li>
+      <li>Verifies menu grounding status (confirming zero hallucinations).</li>
+      <li>Displays parsed items, detected quantities, and extracted modifiers (e.g., <code>Extra Spicy</code>, <code>Chilled</code>).</li>
+    </ul>
+  </li>
+  <li><strong>Side Cart & Fast Checkout Card:</strong> Displays active cart items and subtotal alongside the phone mockup.</li>
+</ul>
+
+<h2>2.5 Persistent Floating AI Voice & Chat Assistant</h2>
+<p><em>Accessible from the bottom-right corner across all pages via the floating action button (FAB).</em></p>
+<ul>
+  <li><strong>Floating Action Button (FAB):</strong> Fixed at <code>bottom-6 right-6</code> with pulse ring animations when listening, unread notification dots, and a real-time cart item count badge.</li>
+  <li><strong>Expandable 560px Assistant Window:</strong>
+    <ul>
+      <li><strong>Header Controls:</strong> Online status indicator, animated audio waveform, voice synthesizer mute toggle (<code>Volume2 / VolumeX</code>), and close button.</li>
+      <li><strong>Tab 1: Text Chat:</strong> Full conversational chat synced with global state, quick chips, and message history.</li>
+      <li><strong>Tab 2: Voice Order:</strong>
+        <ul>
+          <li><strong>Language Selector:</strong> Dropdown to switch between <code>English / Roman Urdu (en-US)</code> and <code>اردو (ur-PK)</code>.</li>
+          <li><strong>Interactive Microphone Orb:</strong> 96px central button with state transitions (Idle, Listening with red pulse rings, Speaking with green pulse rings).</li>
+          <li><strong>Live Speech Transcript Box:</strong> Real-time speech-to-text transcript feed.</li>
+          <li><strong>Barge-in Interrupt Button:</strong> "Stop Speaking" button to immediately halt TTS speech synthesis when the user speaks.</li>
+          <li><strong>Agent Voice Response Box:</strong> Displays the text of the AI's spoken answer.</li>
+        </ul>
+      </li>
+      <li><strong>Bottom Mini Cart Strip:</strong> Shows item count, total price, and a direct "Place Order" button.</li>
+    </ul>
+  </li>
+</ul>
+
+<h2>2.6 Page 3: Kitchen Kanban Dashboard (<code>/dashboard</code>)</h2>
+<ul>
+  <li><strong>Operational Stats Strip:</strong> Displays Total Sales Today (PKR), Orders Dispatched, Average Order Value (AOV), and Pending Orders.</li>
+  <li><strong>4-Column Kitchen Kanban Board:</strong>
+    <ol>
+      <li><strong>New Orders:</strong> Incoming orders arrive here with an automated Web Audio API two-tone bell chime (<code>587.33Hz -> 880Hz</code>) and a 4.5-second emerald border glow.</li>
+      <li><strong>Kitchen Preparing:</strong> Orders actively being cooked.</li>
+      <li><strong>Ready for Dispatch:</strong> Cooked orders waiting for delivery riders.</li>
+      <li><strong>Completed / Delivered:</strong> Successfully fulfilled orders.</li>
+    </ol>
+  </li>
+  <li><strong>Interactive Kanban Order Card:</strong>
+    <ul>
+      <li>Order ID (e.g., <code>#PK-102</code>), customer name, phone number, and channel tag (<code>Voice Agent</code>, <code>Chat Agent</code>, <code>Menu</code>).</li>
+      <li>Delivery address with map pin icon.</li>
+      <li>Time elapsed counter (e.g., <code>Just now</code>, <code>12 mins ago</code>).</li>
+      <li>Itemized dish list with quantities and modifiers (e.g., <code>Extra Spicy</code>, <code>Chilled Pepsi</code>).</li>
+      <li>Order grand total formatted in PKR.</li>
+      <li><strong>Fraud Risk Badge:</strong> Color-coded <code>Low</code>, <code>Medium</code>, or <code>High</code> risk indicator.</li>
+      <li><strong>"Confirmation Call Needed" Button:</strong> Appears on high-risk orders to launch the phone verification modal.</li>
+      <li><strong>Status Advance Controls:</strong> <code>Move to Preparing</code>, <code>Mark Ready</code>, <code>Delivered</code>.</li>
+      <li><strong>Cancel Order Button:</strong> Cancels the order and updates revenue totals.</li>
+      <li><strong>"Transcript" Button:</strong> Opens the complete conversational transcript modal for that order.</li>
+    </ul>
+  </li>
+</ul>
+
+<div class="page-break"></div>
+
+<h2>2.7 Page 4: Human Handoff & Attention Desk (<code>/handoff</code>)</h2>
+<ul>
+  <li><strong>Customer Escalation Queue:</strong> Lists all customer conversations requiring human intervention with customer name, phone number, and timestamp.</li>
+  <li><strong>Escalation Triggers:</strong>
+    <ul>
+      <li><em>Customer Frustration / Anger:</em> Triggered by sentiment analysis (<code>bakwas</code>, <code>ghussa</code>, <code>fuzool</code>, <code>fraud</code>).</li>
+      <li><em>Manager Request:</em> Triggered by phrases like <code>talk to human</code> or <code>manager se baat karni hai</code>.</li>
+      <li><em>Double Comprehension Failure:</em> Triggered when the AI fails to parse intent twice consecutively.</li>
+    </ul>
+  </li>
+  <li><strong>Manager Takeover Console:</strong> Displays the full chat transcript and allows the store manager to send messages with an official <code>[Store Manager]</code> tag.</li>
+  <li><strong>"Resolve & Return to AI" Button:</strong> Closes the escalation and removes it from the attention queue.</li>
+  <li><strong>"Simulate Escalation" Button:</strong> Test button to simulate a customer escalation on demand.</li>
+</ul>
+
+<h2>2.8 Page 5: Fake-Order Risk & Verification (<code>/risk</code>)</h2>
+<ul>
+  <li><strong>Risk Filter Buttons:</strong> Filters orders by <code>All</code>, <code>High Risk</code>, <code>Medium</code>, and <code>Low</code>.</li>
+  <li><strong>Explainable Fraud Heuristic Rules:</strong>
+    <ul>
+      <li><em>Past Delivery Refusals:</em> 3+ cancellations adds +45 risk points; 1–2 adds +25 points.</li>
+      <li><em>First-Time Customer:</em> Unverified address adds +15 points.</li>
+      <li><em>High COD Basket Value:</em> Orders over Rs. 3,000 add +15 points; over Rs. 5,000 add +30 points.</li>
+      <li><em>Suspicious Item Quantities:</em> Single item qty ≥ 4 or total items ≥ 7 adds +15 points.</li>
+    </ul>
+  </li>
+  <li><strong>Order Verification Card:</strong> Displays numerical risk score bar (0–100), itemized breakdown reasons, and action buttons (<code>Call Customer</code>, <code>Verify Order</code>, <code>Reject & Cancel</code>).</li>
+</ul>
+
+<h2>2.9 Page 6: Kitchen Analytics & Performance (<code>/analytics</code>)</h2>
+<ul>
+  <li><strong>KPI Cards:</strong> Total Sales Today, Orders Dispatched, Average Order Value (AOV), and AI Automation Rate (94.2%).</li>
+  <li><strong>Hourly Peak Rush Chart:</strong> Visual bar chart of order volume across Pakistani meal times (Lunch Rush, Afternoon Slump, Dinner Start, Peak Rush at 9 PM, Late Night, Midnight Cravings).</li>
+  <li><strong>Best Sellers Leaderboard:</strong> Top 5 revenue-generating dishes with order counts, PKR revenues, and progress bars.</li>
+  <li><strong>Channel Breakdown:</strong> Volume split between Voice Agent, Chat Agent, and Web Menu.</li>
+</ul>
+
+<h2>2.10 Page 7: Future Enterprise Roadmap (<code>/roadmap</code>)</h2>
+<ul>
+  <li><strong>Phase 6: Real Telephony & SIP Trunking:</strong> Inbound call ingestion via Twilio/Exotel with Deepgram Urdu STT and ElevenLabs voice generation.</li>
+  <li><strong>Phase 7: Official WhatsApp Cloud API Bot:</strong> Ordering on WhatsApp with interactive catalog menus and GPS location pin-drop address capture.</li>
+  <li><strong>Phase 8: Pakistani Digital Payments (JazzCash, Easypaisa, Raast):</strong> Instant mobile wallet prompts and Raast QR scanning to eliminate doorstep cash refusal.</li>
+  <li><strong>Phase 9: Kitchen Demand Forecasting & Wastage AI:</strong> Predictive algorithms estimating ingredient usage and peak rushes.</li>
+  <li><strong>Phase 10: Multi-Branch Routing & POS Synchronization:</strong> Radius-based kitchen auto-dispatch with bidirectional sync into Pakistani POS systems (Foodnerd, Tossdown, Retailer POS).</li>
+</ul>
+
+<h2>2.11 Interactive Modals</h2>
+<ul>
+  <li><strong>Automated COD Confirmation Call Modal (<code>ConfirmationCallModal</code>):</strong> Simulates an automated telephone call to verify high-risk COD orders with multi-stage dialer (Dialing → Ringing → Connected), live call timer, and customer voice dialogue.</li>
+  <li><strong>Demo Mode Auto-Play Walkthrough Modal (<code>DemoModeModal</code>):</strong> Automated 5-step presentation demonstrating Roman Urdu parsing, mid-conversation corrections, out-of-menu rejection, checkout read-back, and live kitchen dispatch.</li>
+  <li><strong>Order Details & Full Transcript Modal (<code>OrderDetailsModal</code>):</strong> Audit view showing complete customer details, delivery address, and the verbatim chat/voice transcript for that order.</li>
+</ul>
+
+<div class="page-break"></div>
+
+<!-- SECTION 3 -->
+<h1>3. Core Engine & Technical Architecture</h1>
+
+<h2>3.1 System Flow Diagram</h2>
+<div class="diagram-box">
+┌────────────────────────────────────────────────────────────────────────┐
+│                      CUSTOMER CONVERSATION CHANNELS                    │
+│      [Web Speech STT: ur-PK / en-US]    [Roman Urdu / English Chat]    │
+└───────────────────────────────────┬────────────────────────────────────┘
+                                    │
+                                    ▼
+┌────────────────────────────────────────────────────────────────────────┐
+│                   DASTARKHWAN AI AGENT ENGINE                          │
+│  1. Language Detector (Urdu Script / Roman Urdu / English)            │
+│  2. Sentiment Check (Frustration / Anger / Human Request)              │
+│  3. Conversational State (Waiting Confirmation / Address)              │
+│  4. Mid-Order Correction (e.g. "nahi 3 nahi 2 kardo")                  │
+│  5. Out-of-Menu Boundary Guard (Biryani, Nihari, Karahi -> Reject)     │
+│  6. Menu Alias & Quantity Matcher (e.g. "char zinger", "thanda pepsi") │
+│  7. Single Natural Upsell (Chilled Pepsi Can / Peri Peri Fries)        │
+│  8. Full Order Read-Back Protocol with Explicit Confirmation           │
+└───────────────────────────────────┬────────────────────────────────────┘
+                                    │
+                                    ▼
+┌────────────────────────────────────────────────────────────────────────┐
+│                      GLOBAL REACT STATE STORE                          │
+│         [menu (with 86'd flags)]   [cart]   [orders]   [messages]      │
+└───────────────────────────────────┬────────────────────────────────────┘
+                                    │
+                                    ▼
+┌────────────────────────────────────────────────────────────────────────┐
+│                 CASH-ON-DELIVERY (COD) RISK SCORER                     │
+│  Rules: Cancellations (45pts) | New Customer (15pts) | Value > 3K     │
+└───────────────────────────────────┬────────────────────────────────────┘
+                                    │
+                  ┌─────────────────┴─────────────────┐
+                  ▼                                   ▼
+        [LOW / MEDIUM RISK]                    [HIGH RISK ORDER]
+                  │                                   │
+                  ▼                                   ▼
+┌───────────────────────────────────┐ ┌──────────────────────────────────┐
+│       KITCHEN KANBAN BOARD        │ │  AUTOMATED VERIFICATION CALL     │
+│  • Web Audio Bell Chime (587->880Hz)│ │  • Simulated Outbound Call     │
+│  • Columns: New->Prep->Ready->Done│ │  • Customer Verifies or Cancels  │
+└───────────────────────────────────┘ └──────────────────────────────────┘
+</div>
+
+<h2>3.2 Technical Service Specifications</h2>
+<table>
+  <thead>
+    <tr>
+      <th>Service Module</th>
+      <th>File Path</th>
+      <th>Primary Technical Responsibilities</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td><strong>Global Store</strong></td>
+      <td><code>src/context/AppContext.jsx</code></td>
+      <td>Manages <code>menu</code>, <code>cart</code>, <code>orders</code>, <code>chatMessages</code>, <code>attentionQueue</code>, and generates the pure Web Audio API bell chime without external audio files.</td>
+    </tr>
+    <tr>
+      <td><strong>Conversational Engine</strong></td>
+      <td><code>src/services/agentEngine.js</code></td>
+      <td>Rule-based NLP engine with Pakistani numeral parsing (<code>ek</code>, <code>do</code>, <code>teen</code>, <code>ایک</code>, <code>دو</code>), alias matching (<code>zingar</code>, <code>thanda</code>), out-of-menu guardrails, one-time upsell logic, and sentiment analysis.</td>
+    </tr>
+    <tr>
+      <td><strong>Speech Service</strong></td>
+      <td><code>src/services/speechService.js</code></td>
+      <td>Web Speech API wrapper handling Speech-to-Text (<code>ur-PK</code> / <code>en-US</code>), Text-to-Speech synthesis with emoji stripping, and instant <strong>barge-in interruption</strong> when the user speaks.</td>
+    </tr>
+    <tr>
+      <td><strong>Fraud Risk Scorer</strong></td>
+      <td><code>src/utils/riskScorer.js</code></td>
+      <td>Explainable heuristic scoring engine evaluating COD fraud risk (past cancellations, first-time status, basket value, bulk quantities).</td>
+    </tr>
+    <tr>
+      <td><strong>Food Catalog</strong></td>
+      <td><code>src/data/menu.js</code></td>
+      <td>21 Pakistani restaurant items across 5 categories with high-resolution imagery, English names, Urdu script titles, prices, and phonetic aliases.</td>
+    </tr>
+    <tr>
+      <td><strong>Customer Profiles</strong></td>
+      <td><code>src/data/customers.js</code></td>
+      <td>Realistic Pakistani customer personas representing new, regular VIP, and high-cancellation users.</td>
+    </tr>
+  </tbody>
+</table>
+
+<div class="page-break"></div>
+
+<!-- SECTION 4 -->
+<h1>4. End-to-End Verification and Testing Guide</h1>
+<p>Follow these steps to test every workflow in your browser (Google Chrome or Microsoft Edge recommended):</p>
+
+<ol>
+  <li><strong>Visual Menu & Slide-Out Cart:</strong>
+    <ul>
+      <li>Navigate to <code>http://localhost:5173/menu</code>.</li>
+      <li>Click category filter pills and search for <code>zinger</code>.</li>
+      <li>Click <strong>Add to Cart</strong> on a Zinger Burger and a Large Pizza.</li>
+      <li>Open the <strong>Cart Drawer</strong>, adjust quantities using <code>+</code> and <code>-</code>, and click <strong>Place Order</strong>.</li>
+      <li>Verify the order appears in <code>Kitchen Kanban</code> (<code>/dashboard</code>) under the <code>New</code> column.</li>
+    </ul>
+  </li>
+  <li><strong>Admin Stock 86'd Real-Time Sync:</strong>
+    <ul>
+      <li>On <code>/menu</code>, toggle to <strong>Admin Mode</strong>.</li>
+      <li>Mark <code>Crispy Zinger Burger</code> as <strong>Mark 86'd</strong>.</li>
+      <li>Open the floating AI assistant at the bottom right and type: <code>1 zinger burger de do</code>.</li>
+      <li>Verify the AI informs you that Zinger Burger is sold out and suggests an alternative.</li>
+    </ul>
+  </li>
+  <li><strong>Voice Ordering with Barge-In:</strong>
+    <ul>
+      <li>Open the floating assistant and switch to the <strong>Voice Order</strong> tab.</li>
+      <li>Tap the microphone orb and speak: <code>2 fajita pizza aur do thandi pepsi</code>.</li>
+      <li>Observe the live transcript, the audio response, and the updated cart total.</li>
+      <li>Speak while the agent is responding to verify barge-in immediately silences the speech synthesis.</li>
+    </ul>
+  </li>
+  <li><strong>Cash-on-Delivery Risk & Verification Call:</strong>
+    <ul>
+      <li>In the Top Bar, change the Persona to <strong>Ali Raza (Flagged Account)</strong>.</li>
+      <li>Place a large order (> Rs. 3,500) via chat or menu.</li>
+      <li>Navigate to <code>Risk & Fraud Check</code> (<code>/risk</code>).</li>
+      <li>Observe the <code>High Risk</code> badge and the itemized risk reasons.</li>
+      <li>Click <strong>Call Customer</strong> to observe the telephone dialer, ring, and connected audio flow.</li>
+    </ul>
+  </li>
+  <li><strong>Human Handoff & Store Manager Console:</strong>
+    <ul>
+      <li>In the chat interface, type: <code>Bhai bakwas service hai, manager se baat karni hai</code>.</li>
+      <li>Observe the AI immediately transferring you to the manager.</li>
+      <li>Navigate to <code>Human Handoff</code> (<code>/handoff</code>) to view the escalated conversation.</li>
+      <li>Send a reply as the store manager and verify it appears in the customer's phone view with a <code>[Store Manager]</code> tag.</li>
+    </ul>
+  </li>
+  <li><strong>Automated Scripted Demo Walkthrough:</strong>
+    <ul>
+      <li>Click <strong>Demo Mode</strong> in the Top Bar and click <strong>Play</strong>.</li>
+      <li>Watch the scripted 5-step ordering flow demonstrate Roman Urdu handling, quantity correction, out-of-menu rejection, and final kitchen dispatch.</li>
+    </ul>
+  </li>
+</ol>
+
+</body>
+</html>
